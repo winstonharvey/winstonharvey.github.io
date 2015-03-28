@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+  <meta charset="utf-8">
+  <title>animate demo</title>
+  <style>
+
+  </style>
+</head>
+<body onload="load();">
+<div style="position: absolute;top:10px;left:15px">
+ <div style="position: relative;top:0px;height:302px;width:62px;border:solid">
+<div id="block" style="position: absolute;bottom:0px;background-color: #86E0C3; width: 60px; border: 1px solid green;">&nbsp;</div>
+</div>
+</div>
+
+<div class="time"></div>
+
+<div id="note_inhale_exhale" style="text-align:center;vertical-align:middle;font-family:Arial;font-size:26pt;position: absolute; left: 103px; top: 63px;">Inhale<br/>+<br/>Hold</div>
+
+
+
+<div style="font-family:Arial;font-size:24pt;color:#AAAAAA;position: absolute; left: 116px; top: 233px;" id="timeElapsed"></div>
+</div>
+
+
+
+ 
+<script>
+
+ function load() {
+time_spent();
+breath_indicator();
+ }
+
+ function breath_indicator() {
+	// return false;
+  $( "#block" ).animate({
+    height: "300px"
+  }, 18000, function() {
+    note_inhale_exhale.innerHTML = 'Exhale<br/>+<br/>Hold';
+	document.getElementById('block').style.backgroundColor='#ACB5E9'
+  } ).animate({
+    height: "0px"
+  }, 18000, function() {
+    note_inhale_exhale.innerHTML = 'Inhale<br/>+<br/>Hold';
+	document.getElementById('block').style.backgroundColor='#86E0C3'
+    breath_indicator();
+  } );
+  
+ }
+  
+   
+  
+  
+// THESE TWO VARIABLES STORE THE TIME AND DATE WHEN THE PAGE IS LOADED
+var startDate = new Date();
+var startTime = startDate.getTime();
+
+// THIS FUNCTION CALCULATES THE SECONDS ELAPSED SINCE THE PAGE WAS LOADED
+function seconds_elapsed () 
+{ 
+var date_now = new Date (); 
+var time_now = date_now.getTime (); 
+var time_diff = time_now - startTime; 
+var seconds_elapsed = Math.floor ( time_diff / 1000 ); 
+
+return ( seconds_elapsed ); 
+} 
+
+// THIS FUNCTION TAKES THE SECONDS ELAPSED AND CONVERTS THEM FOR OUTPUT
+function time_spent () 
+{ 
+// TAKE THE SECONDS ELAPSED
+var secs = seconds_elapsed ();
+
+// CONVERT SECONDS TO MINUTES AND SECONDS
+var mins = Math.floor ( secs / 60 );
+secs -= mins * 60;
+
+// CONVERT MINUTES TO HOURS AND MINUTES
+var hour = Math.floor ( mins / 60 );
+mins -= hour * 60;
+
+// DISPLAY THE FINAL OUTPUT TIME STRING
+if(hour>0) {
+document.getElementById('timeElapsed').innerHTML = hour + ":" + mins + ":" + pad ( secs );
+}
+else  {
+	document.getElementById('timeElapsed').innerHTML = mins + ":" + pad ( secs );
+}
+
+// RECURSIVELY RE-RUN THE FUNCTION EVERY SECOND
+setTimeout( "time_spent ()", 1000 ); 
+}
+
+// THIS FUNCTION INSERTS A LEADING ZERO (IF NECESSARY) TO PROVIDE UNIFORM OUTPUT
+function pad ( num )
+{
+return ( ( num > 9 ) ? num : "0" + num );
+}
+</Script>
+ 
+</body>
+</html>
